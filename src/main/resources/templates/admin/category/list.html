@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{admin/Layout-admin}">
+<head>
+    <title>Category List</title>
+</head>
+<body>
+    <!-- Define the content to be inserted into the layout -->
+    <div th:fragment="content">
+        <h2>Category List</h2>
+        <a th:href="@{/admin/categories/add}">Add Category</a><br>
+		<form action="#" th:action="@{/admin/categories/searchpaginated}" method="get">
+            <input type="text" name="name" placeholder="Search by category name" />
+            <button type="submit">Search</button>
+        </form>
+        <div th:if="${message != null}">
+            <p th:text="${message}"></p>
+        </div>
+
+        <table>
+            <tr>
+                <th>STT</th>
+                <th>Images</th>
+                <th>Category Name</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            <tr th:each="cate, stt : ${list}">
+                <td th:text="${stt.index + 1}"></td>
+                <td th:text="${cate.images}"></td>
+                <td th:text="${cate.name}"></td>
+                <td th:text="${cate.status}"></td>
+                <td>
+                    <a th:href="@{/admin/categories/edit/{id}(id=${cate.id})}">Edit</a>
+                    <a th:href="@{/admin/categories/delete/{id}(id=${cate.id})}">Delete</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

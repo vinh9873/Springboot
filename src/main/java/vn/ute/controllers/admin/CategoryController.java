@@ -45,26 +45,27 @@ public class CategoryController {
 	}
 	
 	
-	@PostMapping("/save")
-	public ModelAndView saveOrUpdate(ModelMap model,
-			@Valid @ModelAttribute("category") CategoryModel cateModel, BindingResult result) {
-		if(result.hasErrors()) {
+	@PostMapping("save")
+	public ModelAndView saveOrUpdate(ModelMap model, @Valid @ModelAttribute("category") CategoryModel cateModel,
+			BindingResult result) {
+		if (result.hasErrors()) {
 			return new ModelAndView("admin/category/add");
 		}
 		Category entity = new Category();
-		//Copy từ Model sang Entity
+		// copy từ Model sang Entity
 		BeanUtils.copyProperties(cateModel, entity);
-		// Gọi hàm save trong service
+		// goi hàm save trong service
 		categoryService.save(entity);
-		// Đưa thông báo về cho biến message
+		// đưa thông báo về cho biến message
 		String message = "";
-		if(cateModel.getIsEdit() == true) {
-			message = "Category is Edited!";
+		if (cateModel.getIsEdit() == true) {
+			message = "Category is Edited! ! ! !!!!! ";
+
 		} else {
-			message = "Category is saved!";
+			message = "Category is saved! ! ! ! ! !!! ";
 		}
-		model.addAttribute("message",message);
-		//Redirect về URL controller
+		model.addAttribute("message", message);
+		// redirect ve URL controller
 		return new ModelAndView("forward:/admin/categories", model);
 	}
 	

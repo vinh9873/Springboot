@@ -8,20 +8,20 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class TomcatJSPConfiguration {
-	
-   @Bean
-   public WebServerFactoryCustomizer<WebServerFactory> staticResourceCustomizer() {
 
-	  return factory -> {
+	@Bean
+	public WebServerFactoryCustomizer<WebServerFactory> staticResourceCustomizer() {
 
-	  if (factory instanceof TomcatServletWebServerFactory tomcatFactory) {
+		return factory -> {
 
+			if (factory instanceof TomcatServletWebServerFactory tomcatFactory) {
 
-	  tomcatFactory.addContextCustomizers(context -> context.addLifecycleListener(new JSPStaticResourceConfigurer(context)));
-	 }
+				tomcatFactory.addContextCustomizers(
+						context -> context.addLifecycleListener(new JSPStaticResourceConfigurer(context)));
+			}
 
-	};
+		};
 
-  }
+	}
 
 }

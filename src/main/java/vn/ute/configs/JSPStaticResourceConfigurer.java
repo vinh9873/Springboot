@@ -7,73 +7,84 @@ import java.net.URI;
 import java.net.URL;
 
 public class JSPStaticResourceConfigurer implements LifecycleListener {
-	
+
 	private final Context context;
 
 	public JSPStaticResourceConfigurer(Context context) {
-		
-	 this.context = context;
+
+		this.context = context;
 
 	}
 
-	 private final String subPath = "/META-INF";
+	private final String subPath = "/META-INF";
 
 	@Override
-    public void lifecycleEvent(LifecycleEvent event) {
-		
-	 if (!event.getType().equals(Lifecycle.CONFIGURE_START_EVENT)) {
-	   return;
+	public void lifecycleEvent(LifecycleEvent event) {
 
-	 }
+		if (!event.getType().equals(Lifecycle.CONFIGURE_START_EVENT)) {
 
-	 final URL finalLocation = getUrl();
+			return;
 
+		}
 
-	 this.context.getResources().createWebResourceSet(
+		final URL finalLocation = getUrl();
 
-	  WebResourceRoot.ResourceSetType.RESOURCE_JAR, "/", finalLocation, subPath
-	 );
+		this.context.getResources().createWebResourceSet(
 
-	 }
+				WebResourceRoot.ResourceSetType.RESOURCE_JAR,
+
+				"/",
+
+				finalLocation,
+
+				subPath
+
+		);
+
+	}
 
 	private URL getUrl() {
-		 
-	 final URL location = this.getClass().getProtectionDomain().getCodeSource().getLocation();
 
-	 if (ResourceUtils.isFileURL(location)) {
+		final URL location = this.getClass().getProtectionDomain().getCodeSource().getLocation();
 
-	    return location;
+		if (ResourceUtils.isFileURL(location)) {
 
-	} else if (ResourceUtils.isJarURL(location)) {
+			return location;
 
-	 try {
-	 // when run as fat jar
-	 //transform
-	 //nested:/home/myfiles/Projects/myproj/myjar.jar/!BOOT-INF/classes/!/
-	 //to
-	 //jar:file:/home/myfiles/Projects/myproj/myjar.jar!/
+		} else if (ResourceUtils.isJarURL(location)) {
 
-	 String locationStr = location.getPath()
-	 .replaceFirst("^nested:", "")
+			try {
 
+				// when run as fat jar
 
-	 .replaceFirst("/!BOOT-INF/classes/!/$", "!/");
+				// transform
 
-	 return new URI("jar:file", locationStr, null).toURL();
+				// nested:/home/myfiles/Projects/myproj/myjar.jar/!BOOT-INF/classes/!/
 
-	 } catch (Exception e) {
+				// to
 
-	   throw new IllegalStateException("Unable to add new JSP source URI to tomcat resources", e);
-	 
-	 }
+				// jar:file:/home/myfiles/Projects/myproj/myjar.jar!/
 
-	 } else {
+				String locationStr = location.getPath()
 
-	 throw new IllegalStateException("Can not add tomcat resources, unhandleable url: " + location);
+						.replaceFirst("^nested:", "")
 
+						.replaceFirst("/!BOOT-INF/classes/!/$", "!/");
 
-	 }
+				return new URI("jar:file", locationStr, null).toURL();
 
-   }
+			} catch (Exception e) {
+
+				throw new IllegalStateException("Unable to add new JSP source URI to tomcat resources", e);
+
+			}
+
+		} else {
+
+			throw new IllegalStateException("Can not add tomcat resources, unhandleable url: " + location);
+
+		}
+
+	}
 
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title layout:title-pattern="${title}">Admin Page</title>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="row">
+        <div class="col">
+            <!-- Include header fragment using th:insert -->
+            <div th:insert="~{admin/fragments/header :: header}"></div>
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <main class="container">
+        <section class="row mt-4">
+            <div class="col mt-5 mb-5">
+                <!-- Placeholder for page-specific content -->
+                <div th:insert="~{::content}">
+                    <!-- Page-specific content will go here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="row">
+        <div class="col">
+            <!-- Include footer fragment using th:insert -->
+            <div th:insert="~{admin/fragments/footer :: footer}"></div>
+        </div>
+    </footer>
+</body>
+</html>
